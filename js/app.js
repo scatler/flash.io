@@ -43,6 +43,12 @@ var app = (function(cardDeck, Showdown) {
       }
       return card;
     },
+    timeToShowPicture: function (){
+      return timeToShowPicture;
+    },
+    setTimeToShowPicture: function(itIsTime) {
+      timeToShowPicture = itIsTime;
+    },
     markdownToHTML: function(markdownText) {
       var text = markdownText.replace(new RegExp('\\|', 'g'), '\n');
       return markdownConverter.makeHtml(text);
@@ -76,8 +82,15 @@ $(document).delegate("#main-page", "pageinit", function() {
     if (card === undefined) {
       window.location.href = '#resources-page';
     } else {
-      $('#question').html(app.markdownToHTML(card.question));
-      $('#answer').html(app.markdownToHTML(card.answer));
+      if (app.timeToShowPicture()) {
+        $('#question').hide();
+        $('#answer').hide();
+        $('#motivation').show();
+      } else {
+        $('#question').html(app.markdownToHTML(card.question));
+        $('#answer').html(app.markdownToHTML(card.answer));
+        app.setTimeToShowPicture(false);
+      }
     }
   }
 
