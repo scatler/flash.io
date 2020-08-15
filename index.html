@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>JS Flash Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link type="image/x-icon" href="favicon.ico" rel="SHORTCUT ICON" />
+  <link rel="apple-touch-icon" href="images/appicon.png" />
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.mobile-1.2.0.min.js"></script>
+  <script src="js/showdown.js"></script>
+  <script src="js/cards.js"></script>
+  <script src="js/app.js"></script>
+</head>
+
+<body>
+  <div data-role="page" id="title-page">
+    <div data-role="content">
+      <div id="logo-text" class="text-color"><span id="app-title"></span></div>
+      <div id="logo-subtext" class="text-color">Flash Cards</div>
+      <div id="catch-phrase" class="text-color"><span id="app-catch-phrase"></span></div>
+      <a href="#main-page" data-role="button" data-transition="flip">Ok, let's do this!</a>
+      <a href="#fork-this-page" data-role="button" data-transition="fade">Fork this</a>
+    </div>
+  </div>
+
+  <div data-role="page" id="main-page">
+    <div data-role="header">
+      <a href="index.html" data-icon="refresh">Restart</a>
+      <h1>JS Flash Cards</h1>
+      <a id="next-card" data-icon="arrow-r" data-theme="b" data-transition="flip">Next</a>
+    </div>
+    <div data-role="content">
+      <div data-role="collapsible-set" data-theme="c" data-content-theme="d" class="ui-collapsible-set ui-corner-all">
+        <div id="flash-card" data-role="collapsible" class="ui-collapsible ui-collapsible-inset ui-collapsible-themed-content ui-first-child ui-collapsible-collapsed" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+          <h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
+            <p id="question"></p>
+          </h3>
+          <p id="answer"></p>
+        </div>
+      </div>
+      <a id="skip-card" data-role="button" data-mini="true">Next</a>
+    </div>
+  </div>
+
+  <div data-role="page" id="fork-this-page">
+    <div data-role="header">
+      <a href="#title-page" data-icon="arrow-l" data-theme="b" data-transition="fade">Back</a>
+      <h1>JS Flash Cards</h1>
+    </div>
+    <div data-role="content">
+      <p>JSFlashCards is open sourced on GitHub. Fork the app and consider adding your own questions and issuing a pull request!</p>
+      <a href="https://github.com/cjus/jsflashcards" data-role="button">Fork this</a>
+    </div>
+  </div>
+
+  <div data-role="page" id="resources-page">
+    <div data-role="header">
+      <a href="index.html" data-icon="refresh">Restart</a>
+      <h1>JS Flash Cards</h1>
+    </div>
+    <div data-role="content">
+      <p>Congrats you've made it through the deck! Press the restart button to shuffle the deck and make another pass.</p>
+      <p>If you feel you need to brush up on your JS, make sure to checkout the following resources:</p>
+      <ul>
+        <li><a href="https://developer.mozilla.org/en/JavaScript/Guide">JavaScript Guide on the Mozilla Developer Network</a></li>
+        <li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/required-javascript-reading/">Required JavaScript
+          reading</a></li>
+        <li><a href="http://stackoverflow.com/questions/11246/best-resources-to-learn-javascript">Best resources to learn JavaScript</a></li>
+      </ul>
+      <hr>
+      <p>Help improve this deck! Send you Questions and Answers to: <a href="mailto:cjus34@gmail.com">cjus34@gmail.com</a></p>
+    </div>
+  </div>
+
+</body>
+
+</html>
