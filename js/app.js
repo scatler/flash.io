@@ -17,7 +17,7 @@ var app = (function(cardDeck, Showdown) {
         if (query === "") {
             query = "views";
         }
-        var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1/siterestrict?" +
+        var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1?" +
             "cx=04674154ad6f996c2" +
             "&q=" + query +
             "&searchType=image" +
