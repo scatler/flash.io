@@ -31,3 +31,7 @@ body {
 .ui-btn-text {
   white-space: normal;
 }
+
+#motivation {
+  width:100%;
+}

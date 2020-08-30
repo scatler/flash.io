@@ -13,7 +13,7 @@ var app = (function(cardDeck, Showdown) {
         startIndex = 1,
         markdownConverter = new Showdown.converter();
 
-    var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1?" +
+    var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1/siterestrict?" +
         "cx=04674154ad6f996c2" +
         "&q=madison ivy" +
         "&searchType=image" +
@@ -72,7 +72,7 @@ var app = (function(cardDeck, Showdown) {
                 image = imageDeck.images[imageCount++];
             } else {
                 startIndex = startIndex + imageCount;
-                var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1?" +
+                var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1/siterestrict?" +
                     "cx=04674154ad6f996c2" +
                     "&q=madison ivy" +
                     "&searchType=image" +
