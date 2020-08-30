@@ -23,6 +23,7 @@
         <div id="catch-phrase" class="text-color"><span id="app-catch-phrase"></span></div>
         <a href="#main-page" data-role="button" data-transition="flip">Ok, let's do this!</a>
         <a href="#fork-this-page" data-role="button" data-transition="fade">Fork this</a>
+        <a href="#enter-search-string-page" data-role="button" data-transition="fade">Enter motivation string</a>
     </div>
 </div>
 
@@ -39,6 +40,12 @@
                     <p id="question"></p>
                 </h3>
                 <p id="answer"></p>
+                Type:
+                <p id="type"></p>
+                Example:
+                <p id="example"></p>
+                Synonym:
+                <p id="synonym"></p>
             </div>
         </div>
         <a id="skip-card" data-role="button" data-mini="true">Next</a>
@@ -56,6 +63,18 @@
     <div data-role="content">
         <p>JSFlashCards is open sourced on GitHub. Fork the app and consider adding your own questions and issuing a pull request!</p>
         <a href="https://github.com/cjus/jsflashcards" data-role="button">Fork this</a>
+    </div>
+</div>
+
+<div data-role="page" id="enter-search-string-page">
+    <div data-role="header">
+        <a href="#title-page" data-icon="arrow-l" data-theme="b" data-transition="fade">Back</a>
+        <h1>JS Flash Cards</h1>
+    </div>
+    <div data-role="content">
+        <p>Enter a motivation string</p>
+        <input id="search-string" data-role="input"/>
+        <a data-role="button">Save</a>
     </div>
 </div>
 

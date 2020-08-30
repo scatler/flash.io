@@ -12,13 +12,19 @@ var app = (function(cardDeck, Showdown) {
         imagesLength = 1,
         startIndex = 1,
         markdownConverter = new Showdown.converter();
-
-    var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1/siterestrict?" +
-        "cx=04674154ad6f996c2" +
-        "&q=madison ivy" +
-        "&searchType=image" +
-        "&start=1"+
-        "&key=AIzaSyApW0Fk_Y1R_yH2pTRBhNDUBP8BfWcurDQ";
+    function getSearchQuery (startIndex) {
+        var query = $("#search-string").val();
+        if (query === "") {
+            query = "views";
+        }
+        var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1/siterestrict?" +
+            "cx=04674154ad6f996c2" +
+            "&q=" + query +
+            "&searchType=image" +
+            "&start=1"+ startIndex +
+            "&key=AIzaSyApW0Fk_Y1R_yH2pTRBhNDUBP8BfWcurDQ";
+        return pathForPics;
+    }
 
     function shuffle(array) {
         // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
@@ -49,7 +55,7 @@ var app = (function(cardDeck, Showdown) {
                 cards = cardDeck.cards;
                 cards = shuffle(cards);
             });
-
+            var pathForPics = getSearchQuery(1);
             $.get(pathForPics,function (data) {
                 imageDeck.images = data.items;
                 imagesLength = imageDeck.images.length;
@@ -72,12 +78,7 @@ var app = (function(cardDeck, Showdown) {
                 image = imageDeck.images[imageCount++];
             } else {
                 startIndex = startIndex + imageCount;
-                var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1/siterestrict?" +
-                    "cx=04674154ad6f996c2" +
-                    "&q=madison ivy" +
-                    "&searchType=image" +
-                    "&start="+ startIndex +
-                    "&key=AIzaSyApW0Fk_Y1R_yH2pTRBhNDUBP8BfWcurDQ";
+                var pathForPics = getSearchQuery(startIndex);
                 $.get(pathForPics,function (data) {
                     imageDeck.images = data.items;
                     imagesLength = imageDeck.images.length;
@@ -111,6 +112,7 @@ $(document).bind('pageinit', function(event, ui) {
     $('#app-catch-phrase').text(flashcardDeck.translation);
 });
 
+
 $(document).delegate("#title-page", "pagecreate", function() {
     "use strict";
     $(this).css('background', '#f0db4f');
@@ -139,6 +141,9 @@ $(document).delegate("#main-page", "pageinit", function() {
                 $('#motivation').hide();
                 $('#question').html(app.markdownToHTML(card.word));
                 $('#answer').html(app.markdownToHTML(card.translation));
+                $('#type').html(app.markdownToHTML(card.type));
+                $('#example').html(app.markdownToHTML(card.example));
+                $('#synonym').html(app.markdownToHTML(card.synonym));
                 app.setTimeToShowPicture(true);
             }
         }
