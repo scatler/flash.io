@@ -12,18 +12,15 @@ var app = (function(cardDeck, Showdown) {
         imagesLength = 1,
         startIndex = 1,
         markdownConverter = new Showdown.converter();
-    function getSearchQuery (startIndex) {
-        var query = $("#search-string").val();
-        if (query === "") {
-            query = "views";
+    var apiArray = ["AIzaSyDpE9eFx605MaEFz5b191k2nAX-MPvAeTM",
+                    "AIzaSyApW0Fk_Y1R_yH2pTRBhNDUBP8BfWcurDQ"],
+        currentApiIndex = 1;
+
+    function getNextApiKey() {
+        if (currentApiIndex === apiArray.length) {
+            currentApiIndex = 0;
         }
-        var pathForPics = "https://content-customsearch.googleapis.com/customsearch/v1?" +
-            "cx=04674154ad6f996c2" +
-            "&q=" + query +
-            "&searchType=image" +
-            "&start=1"+ startIndex +
-            "&key=AIzaSyBbv-3BTAv8XjcjouHWResZ69rIEEFMY8c";
-        return pathForPics;
+        return apiArray[currentApiIndex++];
     }
 
     function shuffle(array) {
@@ -45,22 +42,57 @@ var app = (function(cardDeck, Showdown) {
         return array;
     }
 
+    function getQueryString(query, startIndex, apiKey) {
+        return  "https://content-customsearch.googleapis.com/customsearch/v1?" +
+            "cx=04674154ad6f996c2" +
+            "&q=" + query +
+            "&searchType=image" +
+            "&start=1"+ startIndex +
+            "&key="+ apiKey;
+    }
+
+    function getImages(queryString) {
+        var promise = $.get(queryString,function (data) {
+            imageDeck.images = data.items;
+            imagesLength = imageDeck.images.length;
+            console.log("Images loaded: "+ imagesLength);
+        });
+        return promise;
+    }
+
+    function loadImages(startIndex) {
+        var query = $("#search-string").val();
+        if (query === "") {
+            query = "views";
+        }
+        var apiKey = getNextApiKey();
+        var pathForPics = getQueryString(query, startIndex, apiKey);
+        getImages(pathForPics).fail(function (){
+            //free limit is reached
+            apiKey = getNextApiKey();
+            pathForPics = getQueryString(query, startIndex, apiKey);
+            getImages(pathForPics);
+        });
+    }
+
+    function loadCards() {
+        var deck = $("#decksList").val();
+        var pathForCards = "https://script.google.com/macros/s/AKfycbzR8010DKKawghi360-2dFOqR3xSaOqeSV0QeS1dg/exec?" +
+            "deck=" + deck;
+        //get words
+        $.get(pathForCards,function (data) {
+            cardDeck.cards = data.cards;
+            cardsLength = cardDeck.cards.length;
+            cards = cardDeck.cards;
+            cards = shuffle(cards);
+        });
+    }
     return {
         init: function() {
             cardCount = 0;
-            var pathForCards = "https://script.google.com/macros/s/AKfycbzR8010DKKawghi360-2dFOqR3xSaOqeSV0QeS1dg/exec";
-            $.get(pathForCards,function (data) {
-                cardDeck.cards = data.cards;
-                cardsLength = cardDeck.cards.length;
-                cards = cardDeck.cards;
-                cards = shuffle(cards);
-            });
-            var pathForPics = getSearchQuery(1);
-            $.get(pathForPics,function (data) {
-                imageDeck.images = data.items;
-                imagesLength = imageDeck.images.length;
-                console.log("Images count: "+ imagesLength);
-            });
+            startIndex = 1;
+            loadCards();
+            loadImages(startIndex);
         },
         getNextCard: function() {
             var card;
@@ -78,12 +110,7 @@ var app = (function(cardDeck, Showdown) {
                 image = imageDeck.images[imageCount++];
             } else {
                 startIndex = startIndex + imageCount;
-                var pathForPics = getSearchQuery(startIndex);
-                $.get(pathForPics,function (data) {
-                    imageDeck.images = data.items;
-                    imagesLength = imageDeck.images.length;
-                    console.log("Images count: "+ imagesLength);
-                });
+                loadImages(startIndex);
                 imageCount = 0;
                 image = imageDeck.images[imageCount++];
             }
@@ -119,6 +146,15 @@ $(document).delegate("#title-page", "pagecreate", function() {
     if (navigator.userAgent.match(/Android/i)) {
         window.scrollTo(0, 1);
     }
+});
+
+$(document).delegate("#enter-search-string-page","pagecreate", function () {
+    function updateDeck() {
+        app.init();
+    }
+    $("#updateDeck").bind("click", function(event, ui) {
+        updateDeck();
+    });
 });
 
 $(document).delegate("#main-page", "pageinit", function() {
