@@ -189,10 +189,10 @@ $(document).delegate("#main-page", "pageinit", function() {
             } else {
                 $('#cardsShow').show();
                 $('#motivation').hide();
-                $('#question').html(app.markdownToHTML(card.example));
-                $('#answer').html(app.markdownToHTML(card.translation));
+                $('#question').html(app.markdownToHTML(card.translation));
+                $('#answer').html(app.markdownToHTML(card.word));
                 $('#type').html(app.markdownToHTML(card.type));
-                $('#example').html(app.markdownToHTML(card.word));
+                $('#example').html(app.markdownToHTML(card.example));
                 $('#synonym').html(app.markdownToHTML(card.synonym));
                 app.setTimeToShowPicture(true);
             }
