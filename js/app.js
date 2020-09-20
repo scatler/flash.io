@@ -1,5 +1,6 @@
 var app = (function(cardDeck, Showdown) {
     "use strict";
+    var appAddress = "https://script.google.com/macros/s/AKfycbzR8010DKKawghi360-2dFOqR3xSaOqeSV0QeS1dg/exec";
 
     var appName = 'Flash Cards',
         version = '0.2',
@@ -51,6 +52,17 @@ var app = (function(cardDeck, Showdown) {
             "&key="+ apiKey;
     }
 
+    function getAllSheets() {
+        var address = appAddress + "?getAllSheets='true'";
+        $.get(address, function (data) {
+            $.each(data.sheets, function(index, value) {
+                $('#decksList')
+                    .append($("<option></option>")
+                        .text(value));
+            });
+        });
+    }
+
     function getImages(queryString) {
         var promise = $.get(queryString,function (data) {
             imageDeck.images = data.items;
@@ -77,8 +89,8 @@ var app = (function(cardDeck, Showdown) {
 
     function loadCards() {
         var deck = $("#decksList").val();
-        var pathForCards = "https://script.google.com/macros/s/AKfycbzR8010DKKawghi360-2dFOqR3xSaOqeSV0QeS1dg/exec?" +
-            "deck=" + deck;
+        var pathForCards = appAddress +
+            "?deck=" + deck;
         //get words
         $.get(pathForCards,function (data) {
             cardDeck.cards = data.cards;
@@ -91,6 +103,7 @@ var app = (function(cardDeck, Showdown) {
         init: function() {
             cardCount = 0;
             startIndex = 1;
+            getAllSheets();
             loadCards();
             loadImages(startIndex);
         },
@@ -155,6 +168,7 @@ $(document).delegate("#enter-search-string-page","pagecreate", function () {
     $("#updateDeck").bind("click", function(event, ui) {
         updateDeck();
     });
+
 });
 
 $(document).delegate("#main-page", "pageinit", function() {
@@ -175,10 +189,10 @@ $(document).delegate("#main-page", "pageinit", function() {
             } else {
                 $('#cardsShow').show();
                 $('#motivation').hide();
-                $('#question').html(app.markdownToHTML(card.word));
+                $('#question').html(app.markdownToHTML(card.example));
                 $('#answer').html(app.markdownToHTML(card.translation));
                 $('#type').html(app.markdownToHTML(card.type));
-                $('#example').html(app.markdownToHTML(card.example));
+                $('#example').html(app.markdownToHTML(card.word));
                 $('#synonym').html(app.markdownToHTML(card.synonym));
                 app.setTimeToShowPicture(true);
             }
