@@ -189,8 +189,8 @@ $(document).delegate("#main-page", "pageinit", function() {
             } else {
                 $('#cardsShow').show();
                 $('#motivation').hide();
-                $('#question').html(app.markdownToHTML(card.translation));
-                $('#answer').html(app.markdownToHTML(card.word));
+                $('#question').html(app.markdownToHTML(card.word));
+                $('#answer').html(app.markdownToHTML(card.translation));
                 $('#type').html(app.markdownToHTML(card.type));
                 $('#example').html(app.markdownToHTML(card.example));
                 $('#synonym').html(app.markdownToHTML(card.synonym));
